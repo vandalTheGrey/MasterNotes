@@ -688,13 +688,7 @@ Closing writers
 
 2023-01-12T09:26:21.5822432-08:00|INFORMATION|SharpHound Enumeration Completed at 9:26 AM on 1/12/2023! Happy Graphing!
 
-\`\`\`
-
-\## Up Next
-
-We explore some use cases of SharpHound on Windows and how we can collect information from the domain we are attacking.
-
-The following section will see how we can collect information from Linux.
+```
 
 
 
