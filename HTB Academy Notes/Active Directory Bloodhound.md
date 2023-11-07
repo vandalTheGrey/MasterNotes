@@ -553,5 +553,49 @@ Password: Password123
 
 **Note:** If the computers names do not appear when importing the files, we can import the file again to correct it.
 
+
+Include front/back template
+
 ___
+
+​
+
+[SharpHound](https://github.com/BloodHoundAD/SharpHound) is the official data collector tool for [BloodHound](https://github.com/BloodHoundAD/BloodHound), is written in C# and can be run on Windows systems with the .NET framework installed. The tool uses various techniques to gather data from Active Directory, including native Windows API functions and LDAP queries.
+
+​
+
+The data collected by SharpHound can be used to identify security weaknesses in an Active Directory environment to attack it or to plan for remediation.
+
+​
+
+This section will discover the basic functionalities of enumerating Active Directory using SharpHound and how to do it.
+
+​
+
+## Basic Enumeration
+
+​
+
+By default SharpHound, if run without any options, will identify the domain to which the user who ran it belongs and will execute the default collection. Let's execute SharpHound without any options.
+
+​
+
+**Note:** To follow the exercise start the target machine and connect via RDP with the following credentials `htb-student:HTBRocks!`.
+
+​
+
+#### Running SharpHound without any option
+
+​
+
+```
+
+C:\tools> SharpHound.exe
+
+2023-01-10T09:10:27.5517894-06:00|INFORMATION|This version of SharpHound is compatible with the 4.2 Release of BloodHound
+
+2023-01-10T09:10:27.6678232-06:00|INFORMATION|Resolved Collection Methods: Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote
+
+Download
+
 
