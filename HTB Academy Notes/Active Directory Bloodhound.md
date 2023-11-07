@@ -598,4 +598,103 @@ C:\tools> SharpHound.exe
 
 Download
 
+\`\`\`
+
+Before using SharpHound, we need to be able to resolve the DNS names of the target domain, and if we have network access to the domain's DNS server, we can configure our network card DNS settings to that server. If this is not the case, we can set up our \[hosts file\](https://en.wikiversity.org/wiki/Hosts\_file/Edit) and include the DNS names of the domain controller.
+
+\*\*Note:\*\* Note that even when using the DNS name in the host file, you may introduce some errors due to name resolution issues that do not exist in the file or are misconfigured.
+
+2\. Configure the DNS server to the IP \`172.16.130.3\` (Domain Controller Internal IP). In this exercise the DNS are already configured, there is no need to change them.
+
+!\[text\](https://academy.hackthebox.com/storage/modules/69/configure\_dns.jpg)
+
+3\. Run \`cmd.exe\` and execute the following command to launch another \`cmd.exe\` with the htb-student credentials. It will ask for a password. The password is \`HTBRocks!\`:
+
+\`\`\`
+
+C:\\htb> runas /netonly /user:INLANEFREIGHT\\htb-student cmd.exe
+
+Enter the password for INLANEFREIGHT\\htb-student:
+
+Attempting to start cmd.exe as user "INLANEFREIGHT\\htb-student" ...
+
+\`\`\`
+
+!\[text\](https://academy.hackthebox.com/storage/modules/69/runas\_netonly.jpg)
+
+\*\*Note:\*\* \`runas /netonly\` does not validate credentials, and if we use the wrong credentials, we will notice it while trying to connect through the network.
+
+4\. Execute \`net view \\\\inlanefreight.htb\\\` to confirm we had successfully authenticated.
+
+\`\`\`
+
+C:\\htb> net view \\\\inlanefreight.htb\\
+
+Shared resources at \\\\inlanefreight.htb\\
+
+Share name Type Used as Comment.
+
+\-------------------------------------------------------------------------------
+
+NETLOGON Disk Logon server share
+
+SYSVOL Disk Logon server share
+
+The command completed successfully.
+
+\`\`\`
+
+5\. Run SharpHound.exe with the option \`--domain\`:
+
+\`\`\`
+
+C:\\Tools> SharpHound.exe -d inlanefreight.htb
+
+2023-01-12T09:25:21.5040729-08:00|INFORMATION|This version of SharpHound is compatible with the 4.2 Release of BloodHound
+
+2023-01-12T09:25:21.6603414-08:00|INFORMATION|Resolved Collection Methods: Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote
+
+2023-01-12T09:25:21.6760332-08:00|INFORMATION|Initializing SharpHound at 9:25 AM on 1/12/2023
+
+2023-01-12T09:25:22.0197242-08:00|INFORMATION|Flags: Group, LocalAdmin, Session, Trusts, ACL, Container, RDP, ObjectProps, DCOM, SPNTargets, PSRemote
+
+2023-01-12T09:25:22.2541585-08:00|INFORMATION|Beginning LDAP search for INLANEFREIGHT.HTB
+
+2023-01-12T09:25:22.3010985-08:00|INFORMATION|Producer has finished, closing LDAP channel
+
+2023-01-12T09:25:22.3010985-08:00|INFORMATION|LDAP channel closed, waiting for consumers
+
+2023-01-12T09:25:52.3794310-08:00|INFORMATION|Status: 0 objects finished (+0 0)/s -- Using 36 MB RAM
+
+2023-01-12T09:26:21.3792883-08:00|INFORMATION|Consumers finished, closing output channel
+
+2023-01-12T09:26:21.4261266-08:00|INFORMATION|Output channel closed, waiting for output task to complete
+
+Closing writers
+
+2023-01-12T09:26:21.4885564-08:00|INFORMATION|Status: 94 objects finished (+94 1.59322)/s -- Using 44 MB RAM
+
+2023-01-12T09:26:21.4885564-08:00|INFORMATION|Enumeration finished in 00:00:59.2357019
+
+2023-01-12T09:26:21.5665717-08:00|INFORMATION|Saving cache with stats: 53 ID to type mappings.
+
+53 name to SID mappings.
+
+1 machine sid mappings.
+
+2 sid to domain mappings.
+
+0 global catalog mappings.
+
+2023-01-12T09:26:21.5822432-08:00|INFORMATION|SharpHound Enumeration Completed at 9:26 AM on 1/12/2023! Happy Graphing!
+
+\`\`\`
+
+\## Up Next
+
+We explore some use cases of SharpHound on Windows and how we can collect information from the domain we are attacking.
+
+The following section will see how we can collect information from Linux.
+
+
 
