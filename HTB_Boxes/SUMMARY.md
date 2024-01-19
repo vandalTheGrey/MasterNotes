@@ -1,5 +1,9 @@
 # Table of contents
 
-* [Keeper](keeper.md)
+* [Keeper](README.md)
 * [Cozyhosting](cozyhosting.md)
-* [Codify](codify.md)
+
+## Group 1
+
+* [Academy Solutions](group-1/academy-solutions/README.md)
+  * [Incident Handling Process](group-1/academy-solutions/incident-handling-process.md)
