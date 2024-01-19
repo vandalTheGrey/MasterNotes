@@ -3,7 +3,11 @@
 * [Keeper](README.md)
 * [Cozyhosting](cozyhosting.md)
 
-## Group 1
+## Solutions
 
-* [Academy Solutions](group-1/academy-solutions/README.md)
-  * [Incident Handling Process](group-1/academy-solutions/incident-handling-process.md)
+* [Academy Solutions](solutions/academy-solutions/README.md)
+  * [Incident Handling Process](solutions/academy-solutions/incident-handling-process.md)
+
+## HTB Challenges
+
+* [RF Flag](htb-challenges/rf-flag.md)
