@@ -8,6 +8,7 @@
 
 * [Keeper](active-boxes/keeper.md)
 * [Cozyhosting](active-boxes/cozyhosting.md)
+* [POV](active-boxes/pov.md)
 
 ## HTB Academy Solutions
 
