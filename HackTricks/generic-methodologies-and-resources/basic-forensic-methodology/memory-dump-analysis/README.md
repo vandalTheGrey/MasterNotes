@@ -1,2 +1,0 @@
-# memory-dump-analysis
-

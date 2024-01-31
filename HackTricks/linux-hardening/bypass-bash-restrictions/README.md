@@ -1,2 +1,0 @@
-# bypass-bash-restrictions
-

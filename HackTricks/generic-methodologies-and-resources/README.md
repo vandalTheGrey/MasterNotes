@@ -1,2 +1,0 @@
-# generic-methodologies-and-resources
-
