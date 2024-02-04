@@ -1,3 +1,3 @@
 [submodule "hacktricks"]
-	path = hacktricks
+	path = HackTricks
 	url = https://github.com/carlospolop/hacktricks
